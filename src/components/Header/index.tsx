@@ -4,7 +4,7 @@ import { SignInButton } from "../SignInButton";
 export function Header() {
   return (
     <div className="bg-purple-500 fixed top-0 left-0 right-0 z-20">
-      <header className="font-serif max-w-5xl mx-auto p-6 grid grid-cols-3 w-full items-center text-white">
+      <header className="h-24 font-serif max-w-5xl mx-auto p-6 grid grid-cols-3 w-full items-center text-white">
         <h1 className="text-2xl font-bold">gBlog</h1>
         <nav className="flex gap-4 justify-self-center">
           <Link href="/">
