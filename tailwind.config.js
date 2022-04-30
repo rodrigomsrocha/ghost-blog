@@ -17,5 +17,5 @@ module.exports = {
       serif: ["Georgia", "ui-serif", "Cambria", "Times New Roman"],
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

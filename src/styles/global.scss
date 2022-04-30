@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.post {
+  a {
+    color: #a855f7;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  p,
+  ul {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  pre {
+    background: #eee;
+    padding: 2rem;
+    border-radius: 6px;
+  }
+  ul {
+    padding-left: 1.5rem;
+    li {
+      margin: 0.5rem 0;
+      &::before {
+        content: "\2022";
+        color: #a855f7;
+        font-weight: bold;
+        display: inline-block;
+        width: 1rem;
+        margin-left: -1rem;
+      }
+    }
+  }
+}
