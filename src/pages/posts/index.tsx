@@ -21,12 +21,14 @@ export default function Posts({ posts }: PostsProps) {
       <div className="flex flex-col gap-5">
         {posts.map((post) => (
           <Link href={`/posts/${post.slug}`} key={post.id}>
-            <a className="shadow-neu bg-transparent rounded-md p-4 group h-48">
+            <a className="shadow-neu bg-transparent rounded-md p-4 group">
               <h1 className="transition text-2xl font-bold mb-4 group-hover:text-purple-500">
                 {post.title}
               </h1>
-              <p className="line-clamp-3 overflow-hidden">{post.excerpt}</p>
-              <div className="flex mt-auto transition gap-2 items-center text-gray-400 group-hover:text-purple-300">
+              <p className="mb-2 line-clamp-3 overflow-hidden">
+                {post.excerpt}
+              </p>
+              <div className="flex transition gap-2 items-center text-gray-400 group-hover:text-purple-300">
                 <time className="italic">{post.updatedAt}</time>
                 <div className="w-1 h-1 transition bg-gray-400 group-hover:bg-purple-500 rounded-full" />
                 <span>{post.readingTime}</span>
