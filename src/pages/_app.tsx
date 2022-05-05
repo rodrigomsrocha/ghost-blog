@@ -8,7 +8,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <Header />
-      <Toaster position="top-right" />
+      <Toaster
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <Component {...pageProps} />
     </SessionProvider>
   );

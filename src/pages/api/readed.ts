@@ -30,30 +30,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       q.Get(q.Match(q.Index("user_by_email"), q.Casefold(session.user.email)))
     );
 
-    const postIsAlreadySaved =
-      user.data?.readingList?.filter((item) => item.slug === slug).length > 0;
-
-    if (postIsAlreadySaved) {
-      const updatedReadingList = user.data?.readingList?.filter(
-        (item) => item.slug !== slug
-      );
-      await fauna.query(
-        q.Update(q.Ref(q.Collection("users"), user.ref.id), {
-          data: { readingList: updatedReadingList },
-        })
-      );
-      return res.status(200).json({ readingList: updatedReadingList });
+    const postIsAlredyReaded = user.data.readingList.find(
+      (item) => item.slug === slug
+    ).isReaded;
+    if (postIsAlredyReaded) {
+      return;
     } else {
-      const updatedReadingList = [
-        ...user?.data?.readingList,
-        { slug, isReaded: false },
-      ];
+      const itemIndex = user.data.readingList.findIndex(
+        (item) => item.slug === slug
+      );
+      const updatedReadingList = [...user.data.readingList];
+      updatedReadingList[itemIndex].isReaded = true;
       await fauna.query(
         q.Update(q.Ref(q.Collection("users"), user.ref.id), {
           data: { readingList: updatedReadingList },
         })
       );
-      return res.status(200).json({ readingList: updatedReadingList });
+      return res.status(200).json({ readedSlug: slug });
     }
   } else {
     res.setHeader("Allow", "POST");

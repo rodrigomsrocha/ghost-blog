@@ -8,12 +8,17 @@ import { getPost } from "../../lib/posts";
 import { api } from "../../services/api";
 import { fauna } from "../../services/fauna";
 
+type RaeadingList = {
+  slug: string;
+  isReaded: boolean;
+};
+
 type User = {
   ref: {
     id: string;
   };
   data: {
-    readingList: string[];
+    readingList: RaeadingList[];
   };
 };
 
@@ -35,7 +40,7 @@ export default function Post({ post, isOnReadingList }: Post) {
   async function handleAddToReadingList() {
     try {
       const { data } = await api.post("/savePost", { slug: post.slug });
-      if (data.readingList.includes(post.slug)) {
+      if (data.readingList.some((item) => item === post.slug)) {
         toast.success("added to your reading list");
         setIsSaved(true);
       } else {
@@ -122,7 +127,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       q.Get(q.Match(q.Index("user_by_email"), q.Casefold(session?.user?.email)))
     );
 
-    const isOnReadingList = user.data.readingList.includes(params.slug);
+    const isOnReadingList = user.data.readingList.some(
+      (item) => item.slug === params.slug
+    );
 
     return {
       props: { post, isOnReadingList },

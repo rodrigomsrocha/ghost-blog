@@ -8,12 +8,17 @@ import { getPosts } from "../../lib/posts";
 import { api } from "../../services/api";
 import { fauna } from "../../services/fauna";
 
+type RaeadingList = {
+  slug: string;
+  isReaded: boolean;
+};
+
 type User = {
   ref: {
     id: string;
   };
   data: {
-    readingList: string[];
+    readingList: RaeadingList[];
   };
 };
 
@@ -28,7 +33,7 @@ type Post = {
 
 interface PostsProps {
   posts: Post[];
-  readingList: string[];
+  readingList: RaeadingList[];
 }
 
 export default function Posts({ posts, readingList }: PostsProps) {
@@ -40,7 +45,8 @@ export default function Posts({ posts, readingList }: PostsProps) {
     try {
       const { data } = await api.post("/savePost", { slug });
       setUpdatedReadingList([...data.readingList]);
-      if (data.readingList.includes(slug)) {
+
+      if (data.readingList.some((item) => item.slug === slug)) {
         toast.success("added to your reading list");
       } else {
         toast("removed from your reading list", { icon: "🗑️" });
@@ -66,7 +72,9 @@ export default function Posts({ posts, readingList }: PostsProps) {
               onClick={() => handleAddToReadingList(post.slug)}
               className="transition px-2 py-1 bg-gray-200 rounded-sm hover:bg-purple-200 absolute right-4"
             >
-              {updatedReadingList.includes(post.slug) ? "Unsave" : "Save"}
+              {updatedReadingList.some((item) => item.slug === post.slug)
+                ? "Unsave"
+                : "Save"}
             </button>
             <Link href={`/posts/${post.slug}`}>
               <a className="group">
